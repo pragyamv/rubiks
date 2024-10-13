@@ -131,13 +131,11 @@
         </div>
     </div>
     <div>
-        <button id="shuffle-button">Shuffle</button>
-        <button id="solve-button">Solve</button>
-    </div>
+        <button id="shuffle-button" onclick="document.getElementById('sound').play()">Shuffle</button>
+        <audio id="shuffle-sound" src="https://pragyamv.github.io/rubix/sound.mp3"></audio>
 
-    <div>
-        <button onclick="playClickSound()">Solve</button>
-        <button onclick="playShuffleSound()">Shuffle</button>
+        <button id="solve-button" onclick="document.getElementById('sound').play()">Solve</button>
+        <audio id="solve-sound" src="https://pragyamv.github.io/rubix/sound.mp3"></audio>
     </div>
 
     <div class="top-text">
