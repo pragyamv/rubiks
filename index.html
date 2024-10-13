@@ -67,7 +67,7 @@
             font-size: 45px; /* Adjust the size of the text */
             z-index: 1000; /* Ensures the text is on top of other elements */
             text-align: center;
-            width: 100px;
+            width: 1000px;
         }
 
         .bot-text {
@@ -82,7 +82,7 @@
             font-size: 15px; /* Adjust the size of the text */
             z-index: 1000; /* Ensures the text is on top of other elements */
             text-align: center;
-            width: 100px;
+            width: 1000px;
         }
 
 
@@ -131,8 +131,8 @@
         </div>
     </div>
     <div>
-        <button id="shuffle-button">Shuffle</button>
-        <button id="solve-button">Solve</button>
+        <button onclick="sound()">Shuffle</button>
+        <button onclick="sound()">Solve</button>
     </div>
 
     <div class="top-text">
@@ -157,6 +157,11 @@
                 cubeColors[face] = squares;
             });
             return cubeColors;
+        }
+
+        function sound() {
+            var audio = new Audio('https://pragyamv.github.io/rubix/sound.mp3'); // Path to your sound file
+            audio.play();
         }
 
         function createCube(cubeColors) {
