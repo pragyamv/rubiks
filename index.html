@@ -35,52 +35,32 @@
             width: 100%;
             height: 100%;
             position: relative;
-            margin-top: 120px;
+            margin-top: 90px;
             transform-style: preserve-3d;
             animation: rotate 30s infinite linear;
-            
         }
 
         .face {
             position: absolute;
-            width: 100%; 
-            height: 100%; 
+            width: 100%;
+            height: 100%;
             border: 1px solid #000;
             box-sizing: border-box;
             opacity: 0.9;
             background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(0,0,0,0));
             box-shadow: 0 0 15px rgba(211, 211, 211, 0.5);
-            
         }
-
 
         .top-text {
-            position: fixed; /* Keeps the text at the top, even when scrolling */
-            top: 0; /* Aligns the text to the top of the page */
-            left: 50%; /* Moves the text to the center horizontally */
-            transform: translateX(-50%); /* Ensures exact centering */
-            /*background-color: black; /* Optional: Adds a background color */
-            color: white; /* Text color */
-            /*padding: 90px; /* Adds some space around the text */
-            padding-top: 150px;
-            font-family: 'Press Start 2P', system-ui; /* Set your desired font */
-            font-size: 45px; /* Adjust the size of the text */
-            z-index: 1000; /* Ensures the text is on top of other elements */
-            text-align: center;
-            width: 1000px;
-        }
-
-        .bot-text {
-            position: fixed; /* Keeps the text at the top, even when scrolling */
-            top: 0; /* Aligns the text to the top of the page */
-            left: 50%; /* Moves the text to the center horizontally */
-            transform: translateX(-50%); /* Ensures exact centering */
-            /*background-color: black; /* Optional: Adds a background color */
-            color: white; /* Text color */
-            padding: 110px; /* Adds some space around the text */
-            font-family: 'Press Start 2P', system-ui; /* Set your desired font */
-            font-size: 15px; /* Adjust the size of the text */
-            z-index: 1000; /* Ensures the text is on top of other elements */
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            padding-top: 110px;
+            font-family: 'Press Start 2P', system-ui;
+            font-size: 45px;
+            color: white;
+            z-index: 1000;
             text-align: center;
             width: 1000px;
         }
@@ -99,23 +79,52 @@
             100% { transform: rotateX(360deg) rotateY(360deg); }
         }
 
+        /* New button styles */
         button {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 15px;
-            background-color: #444;
-            color: white;
-            font-size: 1.1em;
-            font-family: 'Press Start 2P', system-ui; 
+            padding: 0.1em 0.25em;
+            width: 13em;
+            height: 4.2em;
+            background-color: #fffdfdde;
+            border: 0.08em solid #000000;
+            border-radius: 0.3em;
+            font-size: 12px;
             cursor: pointer;
-            margin: 0 10px;
-            transition: background-color 0.3s;
-            position:relative;
-            top: -170px;
+            font-family: 'Press Start 2P', system-ui; /* Added same font as the original */
+            position: relative;
+            top: -170px; /* Same position as original buttons */
         }
-        button:hover {
-            background-color: #666;
+        
+
+        button span {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            bottom: 0.4em;
+            width: 8.25em;
+            height: 2.5em;
+            background-color: #212121;
+            border-radius: 0.2em;
+            font-size: 1.5em;
+            color: #ffffff;
+            border: 0.08em solid #fff;
+            box-shadow: 0 0.4em 0.1em 0.019em #ffffff1f;
+            gap: 50px;
         }
+
+        button span:hover 
+        {
+            transition: all 0.5s;
+            transform: translate(0, 0.4em);
+            box-shadow: 0 0 0 0 #fff;
+        }
+
+        button span:not(:hover) 
+        {
+            transition: all 1s;
+        }
+
+
     </style>
 </head>
 <body>
@@ -130,17 +139,22 @@
             <div class="face bottom" id="bottom"></div>
         </div>
     </div>
+
     <div>
-        <button id="shuffle-button" onclick=sound() preload="auto">Shuffle</button>
-        <button id="solve-button" onclick=sound() preload="auto">Solve</button>
+        <!-- Modified Shuffle and Solve buttons with new styles, same position and font -->
+        <button id="shuffle-button" onclick="sound()">
+            <span>Shuffle</span>
+        </button>
+        <button id="solve-button" onclick="sound()">
+            <span>Solve</span>
+        </button>
     </div>
 
     <div class="top-text">
-        <b>Rubik's Solver :)</b> 
+        <b>Rubik's Solver :)</b>
     </div>
 
 
-    
     <script>
         const colors = ['red', 'yellow', 'green', 'blue', 'white', 'orange'];
         const faces = ['front', 'back', 'left', 'right', 'top', 'bottom'];
@@ -158,7 +172,7 @@
         }
 
         function sound() {
-            var audio = new Audio('https://pragyamv.github.io/rubiks/sound.mp3'); // Path to your sound file
+            var audio = new Audio('https://pragyamv.github.io/rubiks/sound.mp3');
             audio.play();
         }
 
@@ -166,7 +180,6 @@
             faces.forEach(face => {
                 const faceDiv = document.getElementById(face);
                 faceDiv.style.background = cubeColors[face][0]; // Set first square color for the face
-                // Creating 9 squares for each face
                 for (let i = 0; i < 9; i++) {
                     const squareDiv = document.createElement('div');
                     squareDiv.className = 'face';
@@ -177,7 +190,6 @@
                     squareDiv.style.boxSizing = 'border-box';
                     faceDiv.appendChild(squareDiv);
 
-                    // Positioning squares
                     const row = Math.floor(i / 3);
                     const col = i % 3;
                     squareDiv.style.top = `${row * 33.33}%`;
@@ -198,18 +210,17 @@
             const solveColors = ['blue', 'white', 'red', 'green', 'orange', 'yellow'];
             faces.forEach((face, index) => {
                 const faceDiv = document.getElementById(face);
-                faceDiv.innerHTML = ''; // Clear existing squares
+                faceDiv.innerHTML = '';
                 for (let i = 0; i < 9; i++) {
                     const squareDiv = document.createElement('div');
                     squareDiv.className = 'face';
                     squareDiv.style.width = '33.33%';
                     squareDiv.style.height = '33.33%';
                     squareDiv.style.position = 'absolute';
-                    squareDiv.style.background = solveColors[index]; // Uniform color for each face
+                    squareDiv.style.background = solveColors[index];
                     squareDiv.style.boxSizing = 'border-box';
                     faceDiv.appendChild(squareDiv);
 
-                    // Positioning squares
                     const row = Math.floor(i / 3);
                     const col = i % 3;
                     squareDiv.style.top = `${row * 33.33}%`;
@@ -220,3 +231,4 @@
     </script>
 </body>
 </html>
+
