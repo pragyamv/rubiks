@@ -150,6 +150,10 @@
         </button>
     </div>
 
+    <button onclick="redirectToPage()"style="position: absolute; top: 60px; right: 200px; ">
+        <span>Tic Tac Toe</span>
+    </button>
+
     <div class="top-text">
         <b>Rubik's Solver :)</b>
     </div>
@@ -174,6 +178,10 @@
         function sound() {
             var audio = new Audio('https://pragyamv.github.io/rubiks/sound.mp3');
             audio.play();
+        }
+
+        function redirectToPage() {
+        window.location.href = 'https://pragyamv.github.io/rubiks/'; // Replace with the URL of the page you want to go to
         }
 
         function createCube(cubeColors) {
