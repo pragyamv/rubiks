@@ -163,7 +163,7 @@
 
             cell.textContent = currentPlayer;
             cell.classList.add('taken');
-            sound();
+            
             await delay(100);
             
             if (checkWinner()) {
@@ -213,6 +213,7 @@
         }
 
         function redirectToPage() {
+        sound();
         window.location.href = 'https://pragyamv.github.io/rubiks/index.html'; // Replace with the URL of the page you want to go to
         }
     </script>
