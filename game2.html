@@ -148,14 +148,13 @@
             cell.addEventListener('click', () => handleCellClick(cell));
             board.appendChild(cell);
         }
-        
+
+        // Sound effects
+        const moveSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+        const winSound = new Audio('https://www.soundjay.com/button/beep-10.wav');
+
         function delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        function sound() {
-            var audio = new Audio('https://pragyamv.github.io/rubiks/sound.mp3');
-            audio.play();
         }
 
         async function handleCellClick(cell) {
@@ -163,7 +162,7 @@
 
             cell.textContent = currentPlayer;
             cell.classList.add('taken');
-            
+            moveSound.play();
             await delay(100);
             
             if (checkWinner()) {
@@ -213,9 +212,11 @@
         }
 
         function redirectToPage() {
-        sound();
         window.location.href = 'https://pragyamv.github.io/rubiks/index.html'; // Replace with the URL of the page you want to go to
         }
     </script>
 </body>
 </html>
+
+
+
