@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Rubik', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            margin-top: 1px;
+            font-size: 45px;
+            font-family: 'Press Start 2P', system-ui;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 150px);
+            grid-gap: 15px;
+        }
+
+        .cell {
+            width: 150px;
+            height: 150px;
+            background-color: black;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border: 3px solid white;
+            cursor: pointer;
+            box-shadow: 0 0 10px 1px rgba(255, 255, 255, 0.4); /* Subtle white glow */
+            transition: box-shadow 0.3s ease; /* Smooth glow effect */
+        }
+
+        .cell:hover 
+        {
+            box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.8); /* Intensified glow on hover */
+        }
+
+        .cell.taken {
+            pointer-events: none;
+        }
+
+        .scores {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-family: 'Press Start 2P', system-ui;
+        }
+
+        button {
+            padding: 0.2em 0.45em;
+            width: 13.5em;
+            height: 4.5em;
+            background-color: #fffdfdde;
+            border: 0.08em solid #000000;
+            border-radius: 0.2em;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', system-ui; /* Added same font as the original */
+            position: relative;
+            top: 10px; /* Same position as original buttons */
+        }
+        
+
+        button span {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            bottom: 0.4em;
+            width: 8.25em;
+            height: 2.5em;
+            background-color: #212121;
+            border-radius: 0.2em;
+            font-size: 1.5em;
+            color: #ffffff;
+            border: 0.1em solid #fff;
+            box-shadow: 0 0.4em 0.1em 0.019em #ffffff1f;
+            gap: 50px;
+        }
+
+        button span:hover 
+        {
+            transition: all 0.5s;
+            transform: translate(0, 0.4em);
+            box-shadow: 0 0 0 0 #fff;
+        }
+
+        button span:not(:hover) 
+        {
+            transition: all 1s;
+        }
+
+        /* Style for the iframe container */
+        #secondPageContainer {
+            display: none;
+            margin-top: 20px;
+            width: 100%;
+            height: 600px;
+            border: 1px solid white;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Tic Tac Toe :)</h1>
+    <div class="board" id="board"></div>
+    <div class="scores">
+        <p>Player X: <span id="scoreX">0</span></p>
+        <p>Player O: <span id="scoreO">0</span></p>
+    </div>
+
+    <button onclick="resetGame()">
+        <span>Reset Game</span>
+    </button>    
+
+    <!-- Button to show the second page (iframe) -->
+    <button onclick="redirectToPage()"style="position: absolute; top: 60px; right: 200px; ">
+        <span>Rubik's cube</span>
+    </button>
+
+    <script>
+        const board = document.getElementById('board');
+        const scoreX = document.getElementById('scoreX');
+        const scoreO = document.getElementById('scoreO');
+        let currentPlayer = 'X';
+        let scores = { X: 0, O: 0 };
+        let gameActive = true;
+
+        // Create the board
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            cell.addEventListener('click', () => handleCellClick(cell));
+            board.appendChild(cell);
+        }
+
+        // Sound effects
+        const moveSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+        const winSound = new Audio('https://www.soundjay.com/button/beep-10.wav');
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function handleCellClick(cell) {
+            if (!gameActive || cell.classList.contains('taken')) return;
+
+            cell.textContent = currentPlayer;
+            cell.classList.add('taken');
+            moveSound.play();
+            await delay(100);
+            
+            if (checkWinner()) {
+                winSound.play();
+                alert(`🎉 Hooray! Player ${currentPlayer} is the winner! 🎉`);
+                scores[currentPlayer]++;
+                updateScores();
+                gameActive = false;
+                return;
+            }
+
+            if (Array.from(document.querySelectorAll('.cell')).every(cell => cell.classList.contains('taken'))) {
+                alert('🤝 It\'s a tie! Try again!');
+                gameActive = false;
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+
+        function checkWinner() {
+            const cells = document.querySelectorAll('.cell');
+            const winningCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                [0, 4, 8], [2, 4, 6] // Diagonals
+            ];
+
+            return winningCombinations.some(combination => {
+                return combination.every(index => cells[index].textContent === currentPlayer);
+            });
+        }
+
+        function updateScores() {
+            scoreX.textContent = scores.X;
+            scoreO.textContent = scores.O;
+        }
+
+        function resetGame() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('taken');
+            });
+            currentPlayer = 'X';
+            gameActive = true;
+        }
+
+        function redirectToPage() {
+        window.location.href = 'https://pragyamv.github.io/rubiks/'; // Replace with the URL of the page you want to go to
+        }
+    </script>
+</body>
+</html>
