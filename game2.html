@@ -148,11 +148,7 @@
             cell.addEventListener('click', () => handleCellClick(cell));
             board.appendChild(cell);
         }
-
-        // Sound effects
-        const moveSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
-        const winSound = new Audio('https://www.soundjay.com/button/beep-10.wav');
-
+        
         function delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
