@@ -157,12 +157,17 @@
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
+        function sound() {
+            var audio = new Audio('https://pragyamv.github.io/rubiks/sound.mp3');
+            audio.play();
+        }
+
         async function handleCellClick(cell) {
             if (!gameActive || cell.classList.contains('taken')) return;
 
             cell.textContent = currentPlayer;
             cell.classList.add('taken');
-            moveSound.play();
+            sound();
             await delay(100);
             
             if (checkWinner()) {
